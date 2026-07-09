@@ -1,0 +1,8 @@
+{
+  "name": "api-alumnos-rds-v2",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "serverless-python-requirements": "^6.0.0"
+  }
+}

@@ -1,0 +1,34 @@
+org: joaquinocana
+service: api-alumnos-rds-v2
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: false
+    slim: true
+
+provider:
+  name: aws
+  runtime: python3.13
+  memorySize: 1024
+  timeout: 20
+  iam:
+    role: arn:aws:iam::728115922510:role/LabRole
+  environment:
+    # Ya no apuntamos a rutas de Parameter Store, sino al nombre del secreto en Secrets Manager.
+    SECRET_NAME: rds_mysql_alumnos/${sls:stage}
+
+functions:
+  listar:
+    handler: ListarAlumnos.lambda_handler
+    package:
+      include:
+        - ./**
+    events:
+      - http:
+          path: /alumnos/listar
+          method: get
+          cors: true
+          integration: lambda
